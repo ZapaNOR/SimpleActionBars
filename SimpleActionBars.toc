@@ -1,0 +1,15 @@
+## Interface: 120000, 120001
+## Title: Simple Action Bars
+## Notes: Minimal styling and hover fade for Blizzard action bars.
+## Author: Zapa
+## Version: 1.0
+## IconTexture: Interface\AddOns\SimpleActionBars\media\sab-logo.png
+## Category-enUS:  |cFF9CDF95Zapa|r Development
+## LoadWith: Blizzard_ActionBar
+## SavedVariables: SimpleActionBarsDB
+
+Libraries/Init.xml
+
+SAB_Core.lua
+SAB_Settings.lua
+SAB_Events.lua
