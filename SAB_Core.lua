@@ -121,8 +121,9 @@ local DEFAULT_STYLE = {
 }
 
 local VISIBILITY_MODE_VISIBLE = "visible"
-local VISIBILITY_MODE_FADE = "fade"
-local VISIBILITY_MODE_FADE_COMBAT = "fade_combat"
+local VISIBILITY_MODE_FADE_OUT_OF_COMBAT = "fade"
+local VISIBILITY_MODE_FADE_IN_COMBAT = "fade_combat"
+local VISIBILITY_MODE_FADE_ALWAYS = "fade_always"
 
 local hoverBars = {}
 local hidePending = false
@@ -226,21 +227,12 @@ local function ensureDefaults()
 			entry.visibility = type(entry.visibility) == "table" and entry.visibility or {}
 			local mode = entry.visibility.mode
 			if mode ~= VISIBILITY_MODE_VISIBLE
-				and mode ~= VISIBILITY_MODE_FADE
-				and mode ~= VISIBILITY_MODE_FADE_COMBAT then
-				local oldFadeOut = boolOrDefault(entry.visibility.fadeOut, spec.defaultFadeOut)
-				local oldFadeOutInCombat = boolOrDefault(entry.visibility.fadeOutInCombat, spec.defaultFadeOutInCombat)
-				if not oldFadeOut then
-					mode = VISIBILITY_MODE_VISIBLE
-				elseif oldFadeOutInCombat then
-					mode = VISIBILITY_MODE_FADE_COMBAT
-				else
-					mode = VISIBILITY_MODE_FADE
-				end
+				and mode ~= VISIBILITY_MODE_FADE_OUT_OF_COMBAT
+				and mode ~= VISIBILITY_MODE_FADE_IN_COMBAT
+				and mode ~= VISIBILITY_MODE_FADE_ALWAYS then
+				mode = VISIBILITY_MODE_VISIBLE
 			end
 			entry.visibility.mode = mode
-			entry.visibility.fadeOut = nil
-			entry.visibility.fadeOutInCombat = nil
 		end
 	end
 
@@ -282,10 +274,13 @@ local function isBarFadeEnabled(barKey)
 	if mode == VISIBILITY_MODE_VISIBLE then
 		return false
 	end
-	if mode == VISIBILITY_MODE_FADE_COMBAT then
+	if mode == VISIBILITY_MODE_FADE_ALWAYS then
+		return true
+	end
+	if mode == VISIBILITY_MODE_FADE_IN_COMBAT then
 		return InCombatLockdown and InCombatLockdown()
 	end
-	if mode == VISIBILITY_MODE_FADE then
+	if mode == VISIBILITY_MODE_FADE_OUT_OF_COMBAT then
 		return not (InCombatLockdown and InCombatLockdown())
 	end
 	return false
@@ -654,8 +649,9 @@ M.Constants = {
 	BAR_SPECS = BAR_SPECS,
 	DEFAULT_STYLE = DEFAULT_STYLE,
 	VISIBILITY_MODE_VISIBLE = VISIBILITY_MODE_VISIBLE,
-	VISIBILITY_MODE_FADE = VISIBILITY_MODE_FADE,
-	VISIBILITY_MODE_FADE_COMBAT = VISIBILITY_MODE_FADE_COMBAT,
+	VISIBILITY_MODE_FADE_OUT_OF_COMBAT = VISIBILITY_MODE_FADE_OUT_OF_COMBAT,
+	VISIBILITY_MODE_FADE_IN_COMBAT = VISIBILITY_MODE_FADE_IN_COMBAT,
+	VISIBILITY_MODE_FADE_ALWAYS = VISIBILITY_MODE_FADE_ALWAYS,
 }
 
 function M:GetBarSpec(barKey)

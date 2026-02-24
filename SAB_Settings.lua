@@ -9,8 +9,9 @@ local BAR_ORDER = CONST.BAR_ORDER or {}
 local BAR_SPECS = CONST.BAR_SPECS or {}
 local DEFAULT_STYLE = CONST.DEFAULT_STYLE or {}
 local VISIBILITY_MODE_VISIBLE = CONST.VISIBILITY_MODE_VISIBLE or "visible"
-local VISIBILITY_MODE_FADE = CONST.VISIBILITY_MODE_FADE or "fade"
-local VISIBILITY_MODE_FADE_COMBAT = CONST.VISIBILITY_MODE_FADE_COMBAT or "fade_combat"
+local VISIBILITY_MODE_FADE_OUT_OF_COMBAT = CONST.VISIBILITY_MODE_FADE_OUT_OF_COMBAT or "fade"
+local VISIBILITY_MODE_FADE_IN_COMBAT = CONST.VISIBILITY_MODE_FADE_IN_COMBAT or "fade_combat"
+local VISIBILITY_MODE_FADE_ALWAYS = CONST.VISIBILITY_MODE_FADE_ALWAYS or "fade_always"
 
 M._settingsFrame = M._settingsFrame or nil
 M._settingsPanel = M._settingsPanel or nil
@@ -209,8 +210,9 @@ local function buildVisibilityTab(container)
 
 	local modeOptions = {
 		[VISIBILITY_MODE_VISIBLE] = "Visible",
-		[VISIBILITY_MODE_FADE] = "Fade out",
-		[VISIBILITY_MODE_FADE_COMBAT] = "Fade out in combat",
+		[VISIBILITY_MODE_FADE_IN_COMBAT] = "Fade in combat",
+		[VISIBILITY_MODE_FADE_OUT_OF_COMBAT] = "Fade out of combat",
+		[VISIBILITY_MODE_FADE_ALWAYS] = "Fade",
 	}
 
 	for _, barKey in ipairs(BAR_ORDER) do
@@ -230,8 +232,9 @@ local function buildVisibilityTab(container)
 			modeDropdown:SetFullWidth(true)
 			modeDropdown:SetCallback("OnValueChanged", function(_, _, value)
 				if value ~= VISIBILITY_MODE_VISIBLE
-					and value ~= VISIBILITY_MODE_FADE
-					and value ~= VISIBILITY_MODE_FADE_COMBAT then
+					and value ~= VISIBILITY_MODE_FADE_IN_COMBAT
+					and value ~= VISIBILITY_MODE_FADE_OUT_OF_COMBAT
+					and value ~= VISIBILITY_MODE_FADE_ALWAYS then
 					return
 				end
 				entry.visibility.mode = value
