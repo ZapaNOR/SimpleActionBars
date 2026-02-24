@@ -1,0 +1,12 @@
+package-as: SimpleActionBars
+enable-nolib-creation: no
+wago-id: v633VZ6b
+curse-id: 1471018
+
+ignore:
+    - README.md
+    - .git/
+    - .github/
+    - .vscode/
+    - .pkgmeta
+    - release.sh
