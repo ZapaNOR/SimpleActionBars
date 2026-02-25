@@ -6,6 +6,7 @@
 ## IconTexture: Interface\AddOns\SimpleActionBars\media\sab-logo.png
 ## Category-enUS:  |cFF9CDF95Zapa|r Development
 ## LoadWith: Blizzard_ActionBar
+## OptionalDeps: LibSharedMedia-3.0, SharedMedia
 ## SavedVariables: SimpleActionBarsDB
 ## X-Wago-ID: v633VZ6b
 ## X-Curse-Project-ID: 1471018

@@ -17,6 +17,25 @@ SlashCmdList["SIMPLEACTIONBARS"] = function(msg)
 	end
 end
 
+local initialized = false
+
+local function InitializeAddon()
+	if initialized then
+		return
+	end
+	initialized = true
+
+	if M.EnsureDefaults then
+		M:EnsureDefaults()
+	end
+	if M.CreateSettingsPanel then
+		M:CreateSettingsPanel()
+	end
+	if M.RefreshBars then
+		M:RefreshBars()
+	end
+end
+
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_LOGIN")
@@ -29,15 +48,7 @@ eventFrame:SetScript("OnEvent", function(_, event, arg1)
 	if event == "ADDON_LOADED" then
 		local addonName = arg1
 		if addonName == ADDON_NAME then
-			if M.EnsureDefaults then
-				M:EnsureDefaults()
-			end
-			if M.CreateSettingsPanel then
-				M:CreateSettingsPanel()
-			end
-			if M.RefreshBars then
-				M:RefreshBars()
-			end
+			InitializeAddon()
 		elseif addonName == "Blizzard_ActionBar" or addonName == "Blizzard_EditMode" then
 			if M.RefreshBars then
 				M:RefreshBars()
@@ -47,15 +58,7 @@ eventFrame:SetScript("OnEvent", function(_, event, arg1)
 	end
 
 	if event == "PLAYER_LOGIN" then
-		if M.EnsureDefaults then
-			M:EnsureDefaults()
-		end
-		if M.CreateSettingsPanel then
-			M:CreateSettingsPanel()
-		end
-		if M.RefreshBars then
-			M:RefreshBars()
-		end
+		InitializeAddon()
 		if M.PrintSlashHelp then
 			M:PrintSlashHelp()
 		end
@@ -63,11 +66,10 @@ eventFrame:SetScript("OnEvent", function(_, event, arg1)
 	end
 
 	if event == "PLAYER_REGEN_DISABLED" or event == "PLAYER_REGEN_ENABLED" then
-		if M.RefreshBars then
-			M:RefreshBars()
-		end
 		if M.ScheduleVisibilityReapply then
 			M:ScheduleVisibilityReapply()
+		elseif M.RefreshBars then
+			M:RefreshBars()
 		end
 		return
 	end
